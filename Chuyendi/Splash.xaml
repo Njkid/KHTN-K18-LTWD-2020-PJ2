@@ -1,0 +1,26 @@
+﻿<Window x:Class="Chuyendi.Splash"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Chuyendi"
+        mc:Ignorable="d"
+        WindowStyle="None"
+        Title="Splash" Height="550" Width="800"
+        WindowStartupLocation="CenterScreen">
+    <Grid>
+        <Image Source="imgs/splash.jpg" />
+        
+        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Loaded="StackPanel_Loaded">
+            <TextBlock Text="WeSplit" Foreground="White" FontSize="120" FontWeight="Bold"></TextBlock>
+        </StackPanel>
+
+        <StackPanel VerticalAlignment="Bottom" Orientation="Horizontal" Margin="5pt">
+            <CheckBox x:Name="notShowAgain" VerticalAlignment="Center"></CheckBox>
+            <TextBlock Text="Không hiện lại màn hình splash" FontSize="14" Foreground="White"></TextBlock>
+                
+        </StackPanel>
+       
+
+    </Grid>
+</Window>
