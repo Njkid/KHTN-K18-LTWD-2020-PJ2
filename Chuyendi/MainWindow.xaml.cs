@@ -23,6 +23,7 @@ namespace Chuyendi
         public MainWindow()
         {
             InitializeComponent();
+            ChuyendiDAO.SaveData(ChuyendiDAO.GetAll());
         }
     }
 }
