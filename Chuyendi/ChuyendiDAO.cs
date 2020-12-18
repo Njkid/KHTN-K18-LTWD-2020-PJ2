@@ -13,6 +13,19 @@ namespace Chuyendi
         public static string WorkingDirectory = System.IO.Directory.GetCurrentDirectory().Replace('\\', '/') + "/";
         public static string DataLink= WorkingDirectory + "data/data.xml";
 
+        public static List<TTChuyendi> virtualDataBase;
+
+        public static void ConnectToVirtualDataBase()
+        {
+            XmlSerializer serializer = new XmlSerializer(typeof(List<TTChuyendi>));
+
+            using (Stream reader = new FileStream(DataLink, FileMode.Open))
+            {
+                // Call the Deserialize method to restore the object's state.
+                virtualDataBase = (List<TTChuyendi>)serializer.Deserialize(reader);
+            }            
+        }
+
         public static void SaveData(List<TTChuyendi> nhungchuyendi)
         {
             XmlSerializer ser = new XmlSerializer(typeof(List<TTChuyendi>));
@@ -24,19 +37,12 @@ namespace Chuyendi
         }
 
         public static List<TTChuyendi> GetAll()
-        {
-            List<TTChuyendi> nhungchuyendi;
-
-            XmlSerializer serializer = new XmlSerializer(typeof(List<TTChuyendi>));
-
-            using (Stream reader = new FileStream(DataLink, FileMode.Open))
-            {
-                // Call the Deserialize method to restore the object's state.
-                nhungchuyendi = (List<TTChuyendi>)serializer.Deserialize(reader);
-            }
-
-            return nhungchuyendi;
+        {           
+            return virtualDataBase;
         }
+
+
+        // Use to generate a fake Data to test
         public static List<TTChuyendi> FakeData()
         {
             var nhungchuyendi = new List<TTChuyendi>();
