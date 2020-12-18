@@ -93,6 +93,7 @@ namespace Chuyendi
         public static string WorkingDerectory = System.IO.Directory.GetCurrentDirectory().Replace('\\', '/') + "/";
 
         public bool TurnOffSplash { get; set; }
+        public int ImgIDCurrent { get; set; }
 
         public static void LoadSettings()
         {
@@ -108,7 +109,7 @@ namespace Chuyendi
             }
             catch (IOException ioex)
             {
-                appSettings = new AppSettings() { TurnOffSplash = false };
+                appSettings = new AppSettings() { TurnOffSplash = false, ImgIDCurrent = 0 };
             }
 
             

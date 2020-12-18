@@ -26,6 +26,12 @@ namespace Chuyendi
             }            
         }
 
+        public static void Add( TTChuyendi newTTCD)
+        {
+            virtualDataBase.Add(newTTCD);
+            SaveData(virtualDataBase);
+        }
+
         public static void SaveData(List<TTChuyendi> nhungchuyendi)
         {
             XmlSerializer ser = new XmlSerializer(typeof(List<TTChuyendi>));
@@ -33,6 +39,7 @@ namespace Chuyendi
             TextWriter writer = new StreamWriter(DataLink);
             ser.Serialize(writer, nhungchuyendi);
             writer.Close();
+
 
         }
 
@@ -47,7 +54,8 @@ namespace Chuyendi
         {
             var nhungchuyendi = new List<TTChuyendi>();
 
-            nhungchuyendi.Add( new TTChuyendi() { Name = "Đi xả stress", Place = "Cần thơ", Status = 0, ImgLink="imgs/splash.jpg",
+            nhungchuyendi.Add( new TTChuyendi() { Name = "Đi xả stress", Place = "Cần thơ",
+                Status = TTChuyendi.STATUS[0], ImgLink="imgs/splash.jpg",
                 Members = new List<Thanhvien>() { 
                     new Thanhvien() { Name = "Nam", 
                         Bills = new List<Bill>() {
@@ -85,7 +93,7 @@ namespace Chuyendi
             {
                 Name = "Đi chơi tết",
                 Place = "Phú Quốc",
-                Status = 4,
+                Status = TTChuyendi.STATUS[4],
                 ImgLink = "imgs/splash.jpg",
                 Members = new List<Thanhvien>() {
                     new Thanhvien() { Name = "Quyết",

@@ -9,10 +9,10 @@ namespace Chuyendi
     
     public class TTChuyendi
     {
-        public static string[] STATUS = { "Chuẩn bị", "Đang đi", "Đến nơi", "Đang về", "Kết thúc" };
+        public static List<string> STATUS = new List<string>(){ "Chuẩn bị", "Đang đi", "Đến nơi", "Đang về", "Kết thúc" };
 
         public string Name { set; get; }
-        public int Status { set; get; }
+        public string Status { set; get; }
         public string Place { set; get; }
         public string ImgLink { set; get; }
         public List<Thanhvien> Members {set; get;}

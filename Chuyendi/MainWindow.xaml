@@ -8,17 +8,21 @@
         WindowStartupLocation="CenterScreen"
         Title="WeSplit" Height="600" Width="900">
     <Window.Resources>
-        <local:StatusChuyenDiConverter x:Key="StatusChuyenDiConverter" />
         <local:FilterConverter x:Key="FilterConverter" />
+        <local:DirectoryConverter x:Key="DirectoryConverter"/>
     </Window.Resources>
     
     <Grid>
+        <Grid.Background>
+            <!--<ImageBrush ImageSource="imgs/splash.jpg" Stretch="UniformToFill"/>-->
+            <ImageBrush ImageSource="imgs/bg_main.jpg"></ImageBrush>
+        </Grid.Background>
         <Grid.RowDefinitions>
             <RowDefinition Height="1*"></RowDefinition>
             <RowDefinition Height="3*"></RowDefinition>
             <RowDefinition Height="40px"></RowDefinition>
         </Grid.RowDefinitions>
-        <Grid Grid.Row="0" Background="LightGreen">
+        <Grid Grid.Row="0" Background="#60000000" >            
             <Grid.ColumnDefinitions>
                 <ColumnDefinition></ColumnDefinition>
                 <ColumnDefinition></ColumnDefinition>
@@ -46,9 +50,9 @@
                     <RowDefinition Height="1*"></RowDefinition>
                 </Grid.RowDefinitions>               
                 <Grid Grid.Row="0">
-                    <Button Height="40pt" Width="200pt" Background="#23aa50" FontWeight="Bold" Foreground="White">+ THÊM CHUYẾN ĐI</Button>
+                    <Button x:Name="AddChuyenDiBtn" Height="40pt" Width="200pt" Background="#bb23aa50" FontWeight="Bold" Foreground="White" Click="AddChuyenDiBtn_Click" >+ THÊM CHUYẾN ĐI</Button>
                 </Grid>
-                <Grid Grid.Column="0" Grid.Row="1" VerticalAlignment="Center" Margin="5pt">
+                <Grid Grid.Column="0" Grid.Row="1" VerticalAlignment="Center" Margin="0,8,0,3">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="1*"></ColumnDefinition>
                         <ColumnDefinition Width="35"></ColumnDefinition>
@@ -72,14 +76,14 @@
                         <DataTemplate>
                             <WrapPanel Margin="20px" VerticalAlignment="Center" >
                                 <StackPanel>
-                                    <Image Source="imgs/splash.jpg" Width="500" Height="250"></Image>
+                                    <Image Source="{Binding Path=ImgLink, Converter={StaticResource DirectoryConverter}}" Width="500" Height="250"></Image>
                                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="5px">
                                         <TextBlock Text="Tên chuyến đi: " />
                                         <TextBlock Text="{Binding Name}" FontWeight="Bold" />
                                     </StackPanel>
                                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="5px">
                                         <TextBlock Text="Giai đoạn: " />
-                                        <TextBlock Text="{Binding Status, Converter={StaticResource StatusChuyenDiConverter}}" FontWeight="Bold" />
+                                        <TextBlock Text="{Binding Status}" FontWeight="Bold" />
                                     </StackPanel>
                                 </StackPanel>         
                             </WrapPanel>
@@ -89,8 +93,8 @@
                 </ListView>
             </Grid>
         </Grid>
-        <Grid Grid.Row="2" Background="LightGreen">
-            <TextBlock VerticalAlignment="Center" FontSize="13" Foreground="DarkGreen" Margin="5pt">Status: Ready</TextBlock>
+        <Grid Grid.Row="2" Background="#60000000">
+            <TextBlock VerticalAlignment="Center" FontSize="13" Foreground="White" Margin="5pt">Status: Ready</TextBlock>
         </Grid>
         
     </Grid>

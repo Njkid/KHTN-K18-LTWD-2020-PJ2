@@ -23,7 +23,7 @@ namespace Chuyendi
     {
         public List<TTChuyendi> listChuyendi;
         public static string color_choose = "#ffffffff";
-        public static string color_notchoose = "#ff23aa50";
+        public static string color_notchoose = "#aa23aa50";
 
         public bool FilterFinished;
         public bool FilterNotFinished;
@@ -50,12 +50,12 @@ namespace Chuyendi
             // filter
             if (FilterFinished)
             {
-                listChuyendi = ChuyendiDAO.GetAll().Where(ele => ele.Status > 3).ToList();
+                listChuyendi = ChuyendiDAO.GetAll().Where(ele => ele.Status.Equals(TTChuyendi.STATUS[4])).ToList();
             }
             else
             if (FilterNotFinished)
             {
-                listChuyendi = ChuyendiDAO.GetAll().Where(ele => ele.Status <= 3).ToList();
+                listChuyendi = ChuyendiDAO.GetAll().Where(ele => !ele.Status.Equals(TTChuyendi.STATUS[4])).ToList();
             }
             else
             {
@@ -67,6 +67,7 @@ namespace Chuyendi
 
 
             chuyendiListView.ItemsSource = listChuyendi;
+            chuyendiListView.Items.Refresh();
 
         }
 
@@ -115,25 +116,14 @@ namespace Chuyendi
             Debug.WriteLine("" + FilterFinished + FilterNotFinished);
         }
 
-    }
-    public class StatusChuyenDiConverter : IValueConverter
-    {
-        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        private void AddChuyenDiBtn_Click(object sender, RoutedEventArgs e)
         {
-            return TTChuyendi.STATUS[Int32.Parse(value.ToString())];
-        }
+            AddChuyenDi addChuyenDiWindow = new AddChuyenDi();
+            addChuyenDiWindow.ShowDialog();
 
-        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
-        {
-            
-            for (int i = 0; i < 5; i++)
-            {
-                if (value.ToString().Equals(TTChuyendi.STATUS[i])) return i;
-            }
-
-            return 0;
+            UpdateListSource();
         }
-    }
+    }    
 
     public class FilterConverter : IValueConverter
     {
@@ -157,6 +147,19 @@ namespace Chuyendi
         {
             if (value.ToString().ToLower().Equals(MainWindow.color_choose)) return true;            
             return false;
+        }
+    }
+
+    public sealed class DirectoryConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            return AppSettings.WorkingDerectory + (string)value;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            return ((string)value).Substring(AppSettings.WorkingDerectory.Length, ((string)value).Length - AppSettings.WorkingDerectory.Length);
         }
     }
 }
