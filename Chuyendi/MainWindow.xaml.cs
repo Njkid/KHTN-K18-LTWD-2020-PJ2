@@ -23,7 +23,7 @@ namespace Chuyendi
     {
         public List<TTChuyendi> listChuyendi;
         public static string color_choose = "#ffffffff";
-        public static string color_notchoose = "#aa23aa50";
+        public static string color_notchoose = "#9923aa50";
 
         public bool FilterFinished;
         public bool FilterNotFinished;
@@ -63,7 +63,16 @@ namespace Chuyendi
             }
 
             //search
-            // do something
+            if (searchTextBox.Text.Length > 0)
+            {
+                listChuyendi = listChuyendi.Where(ele => 
+                ele.Name.ToLower().Contains(searchTextBox.Text.ToLower()) ||
+                ele.Place.ToLower().Contains(searchTextBox.Text.ToLower()) ||
+                ele.Members.Any(mem => mem.Name.ToLower().Contains(searchTextBox.Text.ToLower()))
+                ).ToList();
+
+                
+            }
 
 
             chuyendiListView.ItemsSource = listChuyendi;
@@ -79,6 +88,7 @@ namespace Chuyendi
             if (filterFinishedBtn.Background.ToString().ToLower().Equals(color_choose))
             {
                 filterFinishedBtn.Background = (Brush)bc.ConvertFrom(color_notchoose);
+                fnTxt.Foreground = (Brush)bc.ConvertFrom("#ffffff");
                 FilterFinished = false;
                 
             }
@@ -87,6 +97,8 @@ namespace Chuyendi
                 filterFinishedBtn.Background = (Brush)bc.ConvertFrom(color_choose);
                 filterNotFinishedBtn.Background = (Brush)bc.ConvertFrom(color_notchoose);
                 FilterNotFinished = false;
+                nfnTxt.Foreground = (Brush)bc.ConvertFrom("#ffffff");
+                fnTxt.Foreground = (Brush)bc.ConvertFrom("#000000");
                 FilterFinished = true;
             }
 
@@ -102,6 +114,7 @@ namespace Chuyendi
             if (filterNotFinishedBtn.Background.ToString().ToLower().Equals(color_choose))
             {
                 filterNotFinishedBtn.Background = (Brush)bc.ConvertFrom(color_notchoose);
+                nfnTxt.Foreground = (Brush)bc.ConvertFrom("#ffffff");
                 FilterNotFinished = false;
             }
             else
@@ -110,6 +123,8 @@ namespace Chuyendi
                 filterFinishedBtn.Background = (Brush)bc.ConvertFrom(color_notchoose);
                 FilterFinished = false;
                 FilterNotFinished = true;
+                fnTxt.Foreground = (Brush)bc.ConvertFrom("#ffffff");
+                nfnTxt.Foreground = (Brush)bc.ConvertFrom("#000000");
             }
             UpdateListSource();
 
@@ -123,7 +138,20 @@ namespace Chuyendi
 
             UpdateListSource();
         }
-    }    
+
+        private void searchTextBox_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                UpdateListSource();
+            }
+        }
+
+        private void searchBtn_Click(object sender, RoutedEventArgs e)
+        {
+            UpdateListSource();
+        }
+    }
 
     public class FilterConverter : IValueConverter
     {

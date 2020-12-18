@@ -11,7 +11,7 @@
         <local:FilterConverter x:Key="FilterConverter" />
         <local:DirectoryConverter x:Key="DirectoryConverter"/>
     </Window.Resources>
-    
+
     <Grid>
         <Grid.Background>
             <!--<ImageBrush ImageSource="imgs/splash.jpg" Stretch="UniformToFill"/>-->
@@ -22,7 +22,7 @@
             <RowDefinition Height="3*"></RowDefinition>
             <RowDefinition Height="40px"></RowDefinition>
         </Grid.RowDefinitions>
-        <Grid Grid.Row="0" Background="#60000000" >            
+        <Grid Grid.Row="0" Background="#60000000" >
             <Grid.ColumnDefinitions>
                 <ColumnDefinition></ColumnDefinition>
                 <ColumnDefinition></ColumnDefinition>
@@ -38,35 +38,39 @@
                 </Grid.ColumnDefinitions>
                 <TextBlock Grid.Row="0" Grid.ColumnSpan="2" FontSize="70" FontWeight="Bold" Foreground="White" HorizontalAlignment="Center"  VerticalAlignment="Center">WE SPLIT</TextBlock>
                 <StackPanel Grid.Row="1" Grid.Column="1" Background="{Binding FilterFinished, Converter={StaticResource FilterConverter}, UpdateSourceTrigger=PropertyChanged}" Margin="0,5,5,0" Name="filterFinishedBtn" MouseDown="filterFinishedBtn_MouseDown">
-                    <TextBlock   TextAlignment="Center" Padding="10pt"  FontSize="13" VerticalAlignment="Center">Đã kết thúc</TextBlock>
+                    <TextBlock  x:Name="fnTxt" TextAlignment="Center" Padding="10pt"  FontSize="13" VerticalAlignment="Center" Foreground="White">Đã kết thúc</TextBlock>
                 </StackPanel>
                 <StackPanel Grid.Row="1" Grid.Column="0" Background="{Binding FilterNotFinished, Converter={StaticResource FilterConverter}, UpdateSourceTrigger=PropertyChanged}" Margin="0,5,5,0" Name="filterNotFinishedBtn" MouseDown="filterNotFinishedBtn_MouseDown">
-                    <TextBlock   TextAlignment="Center" Padding="10pt"  FontSize="13" VerticalAlignment="Center">Chưa kết thúc</TextBlock>
+                    <TextBlock x:Name="nfnTxt"  TextAlignment="Center" Padding="10pt"  FontSize="13" VerticalAlignment="Center" Foreground="White">Chưa kết thúc</TextBlock>
                 </StackPanel>
             </Grid>
             <Grid Grid.Column ="1">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="2*"></RowDefinition>
                     <RowDefinition Height="1*"></RowDefinition>
-                </Grid.RowDefinitions>               
-                <Grid Grid.Row="0">
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="0" Margin="0,12,0,0">
                     <Button x:Name="AddChuyenDiBtn" Height="40pt" Width="200pt" Background="#bb23aa50" FontWeight="Bold" Foreground="White" Click="AddChuyenDiBtn_Click" >+ THÊM CHUYẾN ĐI</Button>
                 </Grid>
-                <Grid Grid.Column="0" Grid.Row="1" VerticalAlignment="Center" Margin="0,8,0,3">
+                <Grid Grid.Column="0" Grid.Row="1" VerticalAlignment="Center" Margin="0,8,0,3" HorizontalAlignment="Center" Width="400">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="1*"></ColumnDefinition>
                         <ColumnDefinition Width="35"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
-                    <TextBox Grid.Column="0" Name="searchTextBox" FontSize="14pt" Padding="5pt"></TextBox>
-                    <Button Grid.Column="1" FontSize="20" Background="#23aa50" Foreground="White">⌕</Button>
+                    <TextBox Grid.Column="0" Name="searchTextBox" FontSize="10pt" Padding="5pt" KeyUp="searchTextBox_KeyUp"></TextBox>
+                    <Button x:Name="searchBtn" Grid.Column="1" FontSize="20" Background="#bb23aa50" Foreground="White" Click="searchBtn_Click">⌕</Button>
                 </Grid>
             </Grid>
-                       
+
         </Grid>
         <Grid Grid.Row="1" >
             <Grid>
-                <ListView x:Name="chuyendiListView">
-                    
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="737*"/>
+                    <ColumnDefinition Width="155*"/>
+                </Grid.ColumnDefinitions>
+                <ListView x:Name="chuyendiListView" Background="#f0ffffff" Grid.ColumnSpan="2">
+
                     <ListView.ItemsPanel>
                         <ItemsPanelTemplate>
                             <WrapPanel Orientation="Horizontal" VerticalAlignment="Center" />
@@ -85,17 +89,17 @@
                                         <TextBlock Text="Giai đoạn: " />
                                         <TextBlock Text="{Binding Status}" FontWeight="Bold" />
                                     </StackPanel>
-                                </StackPanel>         
+                                </StackPanel>
                             </WrapPanel>
                         </DataTemplate>
                     </ListView.ItemTemplate>
-                    
+
                 </ListView>
             </Grid>
         </Grid>
         <Grid Grid.Row="2" Background="#60000000">
             <TextBlock VerticalAlignment="Center" FontSize="13" Foreground="White" Margin="5pt">Status: Ready</TextBlock>
         </Grid>
-        
+
     </Grid>
 </Window>
