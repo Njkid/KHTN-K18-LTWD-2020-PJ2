@@ -29,7 +29,7 @@ namespace Chuyendi
 
         public static void Add( TTChuyendi newTTCD)
         {
-            virtualDataBase.Add(newTTCD);
+            virtualDataBase.Insert(0, newTTCD);
             SaveData(virtualDataBase);
         }
 

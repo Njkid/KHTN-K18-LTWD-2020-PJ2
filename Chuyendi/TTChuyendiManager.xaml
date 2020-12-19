@@ -6,13 +6,14 @@
         xmlns:local="clr-namespace:Chuyendi"
         mc:Ignorable="d"
         Title="TTChuyendiManager" Height="600" Width="900"
-        WindowStartupLocation="CenterScreen">
+        WindowStartupLocation="CenterScreen"
+        Loaded="Window_Loaded">
     <Window.Resources>
         <local:ColorDebtConverter x:Key="ColorDebtConverter"/>
     </Window.Resources>
     <Grid>
         <Grid.Background>
-            <ImageBrush x:Name="BackgroundTTChuyendi" ImageSource="imgs/splash.jpg"/>
+            <ImageBrush x:Name="BackgroundTTChuyendi"/>
         </Grid.Background>
         <Grid>
             <Grid.RowDefinitions>
@@ -31,7 +32,7 @@
                 </StackPanel>
                 <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Orientation="Horizontal">
                     <StackPanel HorizontalAlignment="Center">
-                        <TextBlock TextAlignment="Center" FontSize="20px" FontWeight="Bold" Foreground="White"> Tên chuyến đi</TextBlock>
+                        <TextBlock x:Name="nameCDTextBlock" TextAlignment="Center" FontSize="20px" FontWeight="Bold" Foreground="White"></TextBlock>
                     </StackPanel>
                 </StackPanel>
             </Grid>
@@ -53,16 +54,23 @@
                     <ListView Grid.Row="2" Name="listViewMembers" ScrollViewer.CanContentScroll="False">
                         <ListView.ItemTemplate>
                             <DataTemplate>                                
-                                <Grid Margin="3px" Background="LightGreen">
+                                <Grid Margin="3px" Background="#efefef">
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="1*"/>
                                         <RowDefinition Height="5*"/>
                                     </Grid.RowDefinitions>
                                     <Grid Grid.Row="0" HorizontalAlignment="Center">                                            
                                         <StackPanel>
-                                            <StackPanel Orientation="Horizontal"  Grid.Row="0" Margin="3px" Background="#23aa50">
-                                                <TextBlock VerticalAlignment="Center" Width="150px" Foreground="White" FontWeight="Bold" Margin="2px">Tên thành viên:</TextBlock>
-                                                <TextBox Name="nameMemberTextBox" Width="150px" Margin="20,2,2,2" Text="{Binding Name}"></TextBox>
+                                            <StackPanel  Background="#333333" Grid.Row="0" Margin="3px">
+                                                <StackPanel Orientation="Horizontal">
+                                                    <StackPanel.Background>
+                                                        <ImageBrush ImageSource="{Binding ElementName=BackgroundTTChuyendi, Path=ImageSource, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Stretch="UniformToFill" Opacity="0.5"></ImageBrush>
+                                                    </StackPanel.Background>
+
+                                                    <TextBlock VerticalAlignment="Center" Width="150px" Foreground="White" FontWeight="Bold" Margin="2px">Tên thành viên:</TextBlock>
+                                                    <TextBox Name="nameMemberTextBox" Width="150px" Margin="20,2,2,2" Text="{Binding Name}"></TextBox>
+                                                </StackPanel>
+                                                
                                             </StackPanel>                                       
                                             <StackPanel Orientation="Horizontal"  Grid.Row="0" Margin="5px">
                                                 <TextBlock VerticalAlignment="Center" Width="150px">Đã chi trả:</TextBlock>
@@ -88,19 +96,58 @@
                                                             </StackPanel>
                                                             <StackPanel Orientation="Horizontal"  Grid.Row="0" Margin="5px">
                                                                 <TextBlock VerticalAlignment="Center" Width="100px">Chi phí:</TextBlock>
-                                                                <TextBox x:Name="costTxtBox" Width="150px" DataObject.Pasting="costTxtBox_Pasting" Margin="20,0,0,0" Text="{Binding Cost, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"></TextBox>
+                                                                <TextBox x:Name="costTxtBox" Width="150px" DataObject.Pasting="costTxtBox_Pasting" Margin="20,0,0,0" Text="{Binding Cost, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" LostFocus="costTxtBox_LostFocus"></TextBox>
                                                             </StackPanel>                                                            
                                                         </StackPanel>
                                                     </DataTemplate>
                                                 </ListView.ItemTemplate>
                                             </ListView>
-                                            <Button>+ Thêm khoản chi</Button>
+                                            <Button Tag="{Binding Name}" Click="addBillButton_Click" Width="150px">+ Thêm khoản chi</Button>
                                         </StackPanel>
                                     </Grid>
                                 </Grid>                                                             
                             </DataTemplate>
                         </ListView.ItemTemplate>
                     </ListView>                    
+                </Grid>
+            </Grid>
+            
+            
+
+            <Grid Grid.Row="1" Grid.Column="1" Background="#f0ffffff" >
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="1*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                </Grid.ColumnDefinitions>
+                
+                <Grid Grid.Row="1" Grid.Column="0">
+                    <StackPanel VerticalAlignment="Center">
+                        <StackPanel Orientation="Horizontal" Margin="10">
+                            <TextBlock FontWeight="Bold" FontSize="12pt">Tổng chi:</TextBlock>
+                            <TextBlock x:Name="totalTextBlock" FontWeight="Bold" FontSize="14pt" Margin="10,0,0,0"></TextBlock>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="10">
+                            <TextBlock FontWeight="Bold" FontSize="12pt" >Mỗi người:</TextBlock>
+                            <TextBlock x:Name="avgTextBlock" FontWeight="Bold" FontSize="14pt" Margin="10,0,0,0"></TextBlock>
+                        </StackPanel>                 
+                    </StackPanel>
+                </Grid>
+                <Grid x:Name="chartArea" Grid.Row="1" Grid.Column="1">
+                    
+                </Grid>
+                
+                <Grid Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
+                    <StackPanel HorizontalAlignment="Center">
+                        <StackPanel Orientation="Horizontal" Margin="10">
+                            <TextBlock >Địa điểm:</TextBlock>
+                            <TextBlock x:Name="placeTextBlock" Margin="10,0,0,0"></TextBlock>
+                        </StackPanel>
+                        <Image x:Name="imageImg"  Height="200"/>
+                    </StackPanel>
                 </Grid>
             </Grid>
             

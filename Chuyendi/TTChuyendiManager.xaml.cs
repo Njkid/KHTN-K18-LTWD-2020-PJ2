@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -25,7 +27,39 @@ namespace Chuyendi
         {
             InitializeComponent();
             IDTTChuyendi = IDChuyendi;
+            TTChuyendi thisCD = ChuyendiDAO.GetAll()[IDChuyendi];
             listViewMembers.ItemsSource = ChuyendiDAO.GetAll()[IDChuyendi].Members;
+
+            // Binding name TTChuyendi
+            Binding bindingNameCD = new Binding("Name");
+            bindingNameCD.Source = ChuyendiDAO.GetAll()[IDChuyendi];
+            bindingNameCD.Mode = BindingMode.TwoWay;
+            bindingNameCD.UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged;
+            nameCDTextBlock.SetBinding(TextBlock.TextProperty, bindingNameCD);
+
+            // Binding place TTChuyendi
+            Binding bindingPlaceCD = new Binding("Place");
+            bindingPlaceCD.Source = ChuyendiDAO.GetAll()[IDChuyendi];
+            bindingPlaceCD.Mode = BindingMode.TwoWay;
+            bindingPlaceCD.UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged;
+            placeTextBlock.SetBinding(TextBlock.TextProperty, bindingPlaceCD);
+
+            imageImg.Source = new BitmapImage(new Uri(AppSettings.WorkingDerectory + thisCD.ImgLink));
+            
+
+            // Binding total TTChuyendi
+            Binding bindingTotalCD = new Binding("Total");
+            bindingTotalCD.Source = ChuyendiDAO.GetAll()[IDChuyendi];
+            bindingTotalCD.Mode = BindingMode.TwoWay;
+            bindingTotalCD.UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged;
+            totalTextBlock.SetBinding(TextBlock.TextProperty, bindingTotalCD);
+
+            // Binding avg TTChuyendi
+            Binding bindingAvgCD = new Binding("Avg");
+            bindingAvgCD.Source = ChuyendiDAO.GetAll()[IDChuyendi];
+            bindingAvgCD.Mode = BindingMode.TwoWay;
+            bindingAvgCD.UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged;
+            avgTextBlock.SetBinding(TextBlock.TextProperty, bindingAvgCD);
 
             //Binding Combobox
             statusChangeComboBox.ItemsSource = TTChuyendi.STATUS;
@@ -44,8 +78,22 @@ namespace Chuyendi
 
         public void UpdateList()
         {
-            listViewMembers.ItemsSource = ChuyendiDAO.GetAll()[IDTTChuyendi].Members;
+            listViewMembers.ItemsSource = ChuyendiDAO.GetAll()[IDTTChuyendi].Members;            
             listViewMembers.Items.Refresh();
+
+            // Binding avg TTChuyendi
+            Binding bindingAvgCD = new Binding("Avg");
+            bindingAvgCD.Source = ChuyendiDAO.GetAll()[IDTTChuyendi];
+            bindingAvgCD.Mode = BindingMode.TwoWay;
+            bindingAvgCD.UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged;
+            avgTextBlock.SetBinding(TextBlock.TextProperty, bindingAvgCD);
+
+            // Binding total TTChuyendi
+            Binding bindingTotalCD = new Binding("Total");
+            bindingTotalCD.Source = ChuyendiDAO.GetAll()[IDTTChuyendi];
+            bindingTotalCD.Mode = BindingMode.TwoWay;
+            bindingTotalCD.UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged;
+            totalTextBlock.SetBinding(TextBlock.TextProperty, bindingTotalCD);
         }
 
         // preference https://stackoverflow.com/questions/1268552/how-do-i-get-a-textbox-to-only-accept-numeric-input-in-wpf
@@ -110,7 +158,7 @@ namespace Chuyendi
 
         private void addMemberBtn_Click(object sender, RoutedEventArgs e)
         {
-            ChuyendiDAO.GetAll()[IDTTChuyendi].Members.Add(new Thanhvien() {Name = "Nhập tên", Bills= new List<Bill>(), Debt=0, Paid=0});
+            ChuyendiDAO.GetAll()[IDTTChuyendi].Members.Insert(0, new Thanhvien() {Name = "Nhập tên", Bills= new List<Bill>(), Debt=0, Paid=0});
             ChuyendiDAO.GetAll()[IDTTChuyendi].Update();
             UpdateList();
         }
@@ -118,6 +166,26 @@ namespace Chuyendi
         ~TTChuyendiManager()
         {
             ChuyendiDAO.SaveData(ChuyendiDAO.GetAll());
+        }
+
+        private void addBillButton_Click(object sender, RoutedEventArgs e)
+        {
+            var btn = sender as Button;
+
+            ChuyendiDAO.GetAll()[IDTTChuyendi].Members.Where(mem => mem.Name.Equals(btn.Tag)).ToList()[0].Bills.Insert(0,new Bill());
+            ChuyendiDAO.GetAll()[IDTTChuyendi].Update();
+            UpdateList();
+        }
+
+        private void costTxtBox_LostFocus(object sender, RoutedEventArgs e)
+        {
+            ChuyendiDAO.GetAll()[IDTTChuyendi].Update();
+            UpdateList();
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            BackgroundTTChuyendi.ImageSource = new BitmapImage(new Uri(AppSettings.WorkingDerectory + ChuyendiDAO.GetAll()[IDTTChuyendi].ImgLink));
         }
     }
 
@@ -136,6 +204,92 @@ namespace Chuyendi
         public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
             return null;
+        }
+    }
+
+    // tham khảo https://stackoverflow.com/questions/47993115/chartingtoolkitchart-how-to-show-value-of-each-pie
+
+    public class PieDataPoint : System.Windows.Controls.DataVisualization.Charting.PieDataPoint
+    {
+        public static readonly DependencyProperty TextedGeometryProperty =
+            DependencyProperty.Register("TextedGeometry", typeof(Geometry), typeof(PieDataPoint));
+
+        public Geometry TextedGeometry
+        {
+            get { return (Geometry)GetValue(TextedGeometryProperty); }
+            set { SetValue(TextedGeometryProperty, value); }
+        }
+
+        static PieDataPoint()
+        {
+            DefaultStyleKeyProperty.OverrideMetadata(typeof(PieDataPoint),
+                new FrameworkPropertyMetadata(typeof(PieDataPoint)));
+        }
+
+        public PieDataPoint()
+        {
+            DependencyPropertyDescriptor dependencyPropertyDescriptor
+                = DependencyPropertyDescriptor.FromProperty(GeometryProperty, GetType());
+
+            dependencyPropertyDescriptor.AddValueChanged(this, OnGeometryValueChanged);
+        }
+
+        private double LabelFontSize
+        {
+            get
+            {
+                FrameworkElement parentFrameworkElement = Parent as FrameworkElement;
+                return Math.Max(8, Math.Min(parentFrameworkElement.ActualWidth,
+                    parentFrameworkElement.ActualHeight) / 30);
+            }
+        }
+
+        private void OnGeometryValueChanged(object sender, EventArgs arg)
+        {
+            Point point;
+            FormattedText formattedText;
+
+            CombinedGeometry combinedGeometry = new CombinedGeometry();
+            combinedGeometry.GeometryCombineMode = GeometryCombineMode.Exclude;
+
+            formattedText = new FormattedText(FormattedRatio,
+                CultureInfo.CurrentCulture,
+                FlowDirection.LeftToRight,
+                new Typeface("Arial"),
+                LabelFontSize,
+                Brushes.White);
+
+            if (ActualRatio == 1)
+            {
+                EllipseGeometry ellipseGeometry = Geometry as EllipseGeometry;
+
+                point = new Point(ellipseGeometry.Center.X - formattedText.Width / 2,
+                    ellipseGeometry.Center.Y - formattedText.Height / 2);
+            }
+            else if (ActualRatio == 0)
+            {
+                TextedGeometry = null;
+                return;
+            }
+            else
+            {
+                Point tangent;
+                Point half;
+                Point origin;
+
+                PathGeometry pathGeometry = Geometry as PathGeometry;
+                pathGeometry.GetPointAtFractionLength(.5, out half, out tangent);
+                pathGeometry.GetPointAtFractionLength(0, out origin, out tangent);
+
+                point = new Point(origin.X + ((half.X - origin.X) / 2) - formattedText.Width / 2,
+                    origin.Y + ((half.Y - origin.Y) / 2) - formattedText.Height / 2);
+
+            }
+
+            combinedGeometry.Geometry1 = Geometry;
+            combinedGeometry.Geometry2 = formattedText.BuildGeometry(point);
+
+            TextedGeometry = combinedGeometry;
         }
     }
 

@@ -6,17 +6,21 @@
         xmlns:local="clr-namespace:Chuyendi"
         WindowStartupLocation="CenterScreen"
         mc:Ignorable="d"
-        Title="AddChuyenDi" Height="450" Width="800">
+        Title="AddChuyenDi" Height="450" Width="800"
+        >
     <Window.Resources>
         <local:DirectoryConverter x:Key="DirectoryConverter"/>
     </Window.Resources>
     <Grid>
+        <Grid.Background>
+            <ImageBrush x:Name="imgBackground"></ImageBrush>
+        </Grid.Background>
         <Grid.RowDefinitions>
             <RowDefinition Height="2*"></RowDefinition>
             <RowDefinition Height="8*"></RowDefinition>
             <RowDefinition Height="1*"></RowDefinition>
         </Grid.RowDefinitions>
-        <Grid Grid.Row="0" Background="LightGreen">
+        <Grid Grid.Row="0" Background="#aa000000">
             <StackPanel VerticalAlignment="Center" HorizontalAlignment="Left">
                 <Button x:Name="BackButton" Width="50" Height="50" Margin="10px" FontSize="25" Background="#00000000" Foreground="#23aa50" BorderBrush="Transparent" Click="BackButton_Click" >❮</Button>
             </StackPanel>
@@ -26,7 +30,7 @@
                 </StackPanel>                
             </StackPanel>            
         </Grid>
-        <Grid Grid.Row="1">
+        <Grid Grid.Row="1" Background="White">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition></ColumnDefinition>
                 <ColumnDefinition></ColumnDefinition>
@@ -46,15 +50,18 @@
                         />
                 </StackPanel>
             </StackPanel>
-            <StackPanel Grid.Column="1" VerticalAlignment="Center">
-                <StackPanel HorizontalAlignment="Center" Margin="0,0,0,5">
-                    <TextBlock>Hình ảnh:</TextBlock>
-                    <Button x:Name="chooseImgBtn" Width="300px" Click="chooseImgBtn_Click">Chọn hình ảnh</Button>
-                    <Image Name="imgLink" Width="275" Margin="5px"></Image>
+            <Grid Grid.Column="1"  Background="White">
+                <StackPanel  VerticalAlignment="Center">
+                    <StackPanel HorizontalAlignment="Center" Margin="0,0,0,5">
+                        <TextBlock>Hình ảnh:</TextBlock>
+                        <Button x:Name="chooseImgBtn" Width="300px" Click="chooseImgBtn_Click">Chọn hình ảnh</Button>
+                        <Image Name="imgLink" Width="275" Margin="5px"></Image>
+                    </StackPanel>
                 </StackPanel>
-            </StackPanel>
+            </Grid>
+            
         </Grid>
-        <Grid Grid.Row="2" Background="LightGreen">
+        <Grid Grid.Row="2" Background="#aa000000">
             <Button x:Name="addTTChuyenDiBtn" Background="#23aa50" Click="addTTChuyenDiBtn_Click" Width="300px" Margin="3px" Foreground="White" FontSize="15" FontWeight="Bold" BorderBrush="Transparent">Hoàn Thành</Button>
         </Grid>
     </Grid>

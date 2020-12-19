@@ -60,6 +60,7 @@ namespace Chuyendi
             imgLink.SetBinding(Image.TagProperty, bindingImgLink);
 
             imgLink.Source = new BitmapImage(new Uri(newTTChuyendi.ImgLink, UriKind.Relative));
+            imgBackground.ImageSource = new BitmapImage(new Uri(newTTChuyendi.ImgLink, UriKind.Relative));
 
         }
               
@@ -95,6 +96,10 @@ namespace Chuyendi
 
             AppSettings.appSettings.ImgIDCurrent++;
             AppSettings.SaveSettings();
+
+            MessageBox.Show("Đã thêm thành công!");
+
+            this.Close();
         }
 
 
