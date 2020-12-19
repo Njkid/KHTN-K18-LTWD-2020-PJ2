@@ -8,6 +8,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.DataVisualization.Charting;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
@@ -69,6 +70,14 @@ namespace Chuyendi
             bindingStatus.Mode = BindingMode.TwoWay;
             bindingStatus.UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged;
             statusChangeComboBox.SetBinding(ComboBox.SelectedValueProperty, bindingStatus);
+
+            Binding bindingMem = new Binding("Members");
+            bindingMem.Source = ChuyendiDAO.GetAll()[IDChuyendi];
+            bindingMem.Mode = BindingMode.TwoWay;
+            bindingMem.UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged;
+            chartController.SetBinding(PieSeries.ItemsSourceProperty, bindingMem);
+
+            //chartController.ItemsSource = ChuyendiDAO.GetAll()[IDChuyendi].Members;
         }
 
         private void BackButton_Click(object sender, RoutedEventArgs e)
@@ -208,7 +217,6 @@ namespace Chuyendi
     }
 
     // tham khảo https://stackoverflow.com/questions/47993115/chartingtoolkitchart-how-to-show-value-of-each-pie
-
     public class PieDataPoint : System.Windows.Controls.DataVisualization.Charting.PieDataPoint
     {
         public static readonly DependencyProperty TextedGeometryProperty =
@@ -293,4 +301,24 @@ namespace Chuyendi
         }
     }
 
+    public class PieSeries : System.Windows.Controls.DataVisualization.Charting.PieSeries
+    {
+        protected override DataPoint CreateDataPoint()
+        {
+            return new PieDataPoint();
+        }
+
+        /*protected static readonly DependencyProperty ActualLegendItemStyleProperty = DependencyProperty.Register("ActualLegendItemStyle", typeof(Style), typeof(DataPointSeries), null);
+        protected Style ActualLegendItemStyle
+        {
+            get
+            {
+                return (base.GetValue(ActualLegendItemStyleProperty) as Style);
+            }
+            set
+            {
+                base.SetValue(ActualLegendItemStyleProperty, value);
+            }
+        }*/
+    }
 }
