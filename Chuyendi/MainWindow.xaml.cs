@@ -151,6 +151,15 @@ namespace Chuyendi
         {
             UpdateListSource();
         }
+
+        private void WrapPanel_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            int pos = ChuyendiDAO.GetAll().IndexOf(chuyendiListView.SelectedItem as TTChuyendi);
+            var DetailScreen = new TTChuyendiManager(pos);
+            DetailScreen.ShowDialog();
+
+            UpdateListSource();
+        }
     }
 
     public class FilterConverter : IValueConverter

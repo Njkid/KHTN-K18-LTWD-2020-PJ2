@@ -1,0 +1,115 @@
+﻿<Window x:Class="Chuyendi.TTChuyendiManager"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Chuyendi"
+        mc:Ignorable="d"
+        Title="TTChuyendiManager" Height="600" Width="900"
+        WindowStartupLocation="CenterScreen">
+    <Window.Resources>
+        <local:ColorDebtConverter x:Key="ColorDebtConverter"/>
+    </Window.Resources>
+    <Grid>
+        <Grid.Background>
+            <ImageBrush x:Name="BackgroundTTChuyendi" ImageSource="imgs/splash.jpg"/>
+        </Grid.Background>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="6*"/>
+                <RowDefinition Height="30"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+            </Grid.ColumnDefinitions>
+
+            <Grid Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Background="#aa000000">
+                <StackPanel VerticalAlignment="Center" HorizontalAlignment="Left">
+                    <Button x:Name="BackButton" Width="50" Height="50" Margin="10px" FontSize="25" Background="#00000000" Foreground="#ffffff" BorderBrush="Transparent" Click="BackButton_Click" >❮</Button>
+                </StackPanel>
+                <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Orientation="Horizontal">
+                    <StackPanel HorizontalAlignment="Center">
+                        <TextBlock TextAlignment="Center" FontSize="20px" FontWeight="Bold" Foreground="White"> Tên chuyến đi</TextBlock>
+                    </StackPanel>
+                </StackPanel>
+            </Grid>
+
+            <Grid Grid.Row="1" Grid.Column="0" Background="#f0ffffff">
+                <Grid Margin="20px">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="35px"/>
+                        <RowDefinition Height="35px"/>
+                        <RowDefinition Height="8*"/>
+                    </Grid.RowDefinitions>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Grid.Row="0" Margin="5px">
+                        <TextBlock VerticalAlignment="Center">Giai đoạn hiện tại:</TextBlock>
+                        <ComboBox Name="statusChangeComboBox"  Width="150px" Margin="20,0,0,0"></ComboBox>
+                    </StackPanel>
+                    <StackPanel Grid.Row="1" VerticalAlignment="Center">
+                        <Button x:Name="addMemberBtn" Width="150" Click="addMemberBtn_Click">+ Thêm thành viên</Button>
+                    </StackPanel>
+                    <ListView Grid.Row="2" Name="listViewMembers" ScrollViewer.CanContentScroll="False">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>                                
+                                <Grid Margin="3px" Background="LightGreen">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="1*"/>
+                                        <RowDefinition Height="5*"/>
+                                    </Grid.RowDefinitions>
+                                    <Grid Grid.Row="0" HorizontalAlignment="Center">                                            
+                                        <StackPanel>
+                                            <StackPanel Orientation="Horizontal"  Grid.Row="0" Margin="3px" Background="#23aa50">
+                                                <TextBlock VerticalAlignment="Center" Width="150px" Foreground="White" FontWeight="Bold" Margin="2px">Tên thành viên:</TextBlock>
+                                                <TextBox Name="nameMemberTextBox" Width="150px" Margin="20,2,2,2" Text="{Binding Name}"></TextBox>
+                                            </StackPanel>                                       
+                                            <StackPanel Orientation="Horizontal"  Grid.Row="0" Margin="5px">
+                                                <TextBlock VerticalAlignment="Center" Width="150px">Đã chi trả:</TextBlock>
+                                                <TextBlock x:Name="paidTxtBlock" Margin="20,0,0,0" Text="{Binding Paid}"></TextBlock>
+                                            </StackPanel>
+                                            <StackPanel Orientation="Horizontal"  Grid.Row="0" Margin="5px">
+                                                <TextBlock VerticalAlignment="Center" Width="150px">Tiền bù:</TextBlock>
+                                                <TextBlock x:Name="deptTxtBlock" Foreground="{Binding Debt, Converter={StaticResource ColorDebtConverter}, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" FontWeight="Bold" Margin="20,0,0,0" Text="{Binding Debt, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" >
+                                                </TextBlock>
+                                            </StackPanel>
+                                        </StackPanel>                                                        
+                                    </Grid>
+                                    <Grid Grid.Row="1" HorizontalAlignment="Center">
+                                        <StackPanel Grid.Row="0" Margin="5px">
+                                            <TextBlock VerticalAlignment="Center" FontSize="10pt" FontWeight="Bold" Width="150px" TextAlignment="Center">CÁC KHOẢN CHI:</TextBlock>
+                                            <ListView Name="billMemberListView" ItemsSource="{Binding Bills}" Height="150px"  ScrollViewer.CanContentScroll="False">
+                                                <ListView.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <StackPanel>
+                                                            <StackPanel Orientation="Horizontal"  Grid.Row="0" Margin="5px">
+                                                                <TextBlock VerticalAlignment="Center" Width="100px">Tên khoản chi:</TextBlock>
+                                                                <TextBox Name="nameBillTextBox" Width="150px" Margin="20,0,0,0" Text="{Binding Name}"></TextBox>
+                                                            </StackPanel>
+                                                            <StackPanel Orientation="Horizontal"  Grid.Row="0" Margin="5px">
+                                                                <TextBlock VerticalAlignment="Center" Width="100px">Chi phí:</TextBlock>
+                                                                <TextBox x:Name="costTxtBox" Width="150px" DataObject.Pasting="costTxtBox_Pasting" Margin="20,0,0,0" Text="{Binding Cost, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"></TextBox>
+                                                            </StackPanel>                                                            
+                                                        </StackPanel>
+                                                    </DataTemplate>
+                                                </ListView.ItemTemplate>
+                                            </ListView>
+                                            <Button>+ Thêm khoản chi</Button>
+                                        </StackPanel>
+                                    </Grid>
+                                </Grid>                                                             
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>                    
+                </Grid>
+            </Grid>
+            
+            <Grid  Grid.Row="2" Grid.ColumnSpan="2" Background="#aa000000">
+                <StackPanel VerticalAlignment="Center">
+                    <TextBlock Text="Status: Ready" Foreground="White"></TextBlock>
+                </StackPanel>                
+            </Grid>            
+            
+        </Grid>
+    </Grid>
+</Window>

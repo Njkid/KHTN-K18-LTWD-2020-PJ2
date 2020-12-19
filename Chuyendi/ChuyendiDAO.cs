@@ -23,6 +23,7 @@ namespace Chuyendi
             {
                 // Call the Deserialize method to restore the object's state.
                 virtualDataBase = (List<TTChuyendi>)serializer.Deserialize(reader);
+                virtualDataBase.ForEach(each => each.Update());
             }            
         }
 

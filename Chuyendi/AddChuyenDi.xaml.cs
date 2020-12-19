@@ -64,10 +64,7 @@ namespace Chuyendi
         }
               
         private void BackButton_Click(object sender, RoutedEventArgs e)
-        {
-            Debug.WriteLine(newTTChuyendi.Name);
-            Debug.WriteLine(newTTChuyendi.ImgLink);
-            Debug.WriteLine(imgLink.Source);
+        {            
             this.Close();
         }
 

@@ -78,7 +78,7 @@
                     </ListView.ItemsPanel>
                     <ListView.ItemTemplate>
                         <DataTemplate>
-                            <WrapPanel Margin="20px" VerticalAlignment="Center" >
+                            <WrapPanel Margin="20px" VerticalAlignment="Center" MouseLeftButtonUp="WrapPanel_MouseLeftButtonUp" >
                                 <StackPanel>
                                     <Image Source="{Binding Path=ImgLink, Converter={StaticResource DirectoryConverter}}" Width="500" Height="250"></Image>
                                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="5px">

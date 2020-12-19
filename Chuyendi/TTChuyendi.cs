@@ -38,8 +38,9 @@ namespace Chuyendi
             // Calc Avg
             Avg = 0;
             if (Members.Count > 0)
-            {
+            {               
                 Avg = Total / Members.Count;
+                Avg = Math.Round(Avg, 2);
             }
 
             foreach (var mem in Members)
