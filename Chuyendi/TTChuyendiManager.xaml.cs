@@ -26,6 +26,7 @@ namespace Chuyendi
         public int IDTTChuyendi { get; set; }
         public TTChuyendiManager(int IDChuyendi)
         {
+            this.DataContext = this;
             InitializeComponent();
             IDTTChuyendi = IDChuyendi;
             TTChuyendi thisCD = ChuyendiDAO.GetAll()[IDChuyendi];
@@ -46,7 +47,7 @@ namespace Chuyendi
             placeTextBlock.SetBinding(TextBlock.TextProperty, bindingPlaceCD);
 
             imageImg.Source = new BitmapImage(new Uri(AppSettings.WorkingDerectory + thisCD.ImgLink));
-            
+
 
             // Binding total TTChuyendi
             Binding bindingTotalCD = new Binding("Total");
@@ -71,13 +72,14 @@ namespace Chuyendi
             bindingStatus.UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged;
             statusChangeComboBox.SetBinding(ComboBox.SelectedValueProperty, bindingStatus);
 
-            Binding bindingMem = new Binding("Members");
-            bindingMem.Source = ChuyendiDAO.GetAll()[IDChuyendi];
+
+
+            Binding bindingMem = new Binding("Members");              
+            bindingMem.Source = ChuyendiDAO.GetAll()[IDChuyendi];            
             bindingMem.Mode = BindingMode.TwoWay;
             bindingMem.UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged;
             chartController.SetBinding(PieSeries.ItemsSourceProperty, bindingMem);
-
-            //chartController.ItemsSource = ChuyendiDAO.GetAll()[IDChuyendi].Members;
+           
         }
 
         private void BackButton_Click(object sender, RoutedEventArgs e)
@@ -87,7 +89,7 @@ namespace Chuyendi
 
         public void UpdateList()
         {
-            listViewMembers.ItemsSource = ChuyendiDAO.GetAll()[IDTTChuyendi].Members;            
+            listViewMembers.ItemsSource = ChuyendiDAO.GetAll()[IDTTChuyendi].Members;
             listViewMembers.Items.Refresh();
 
             // Binding avg TTChuyendi
@@ -103,6 +105,13 @@ namespace Chuyendi
             bindingTotalCD.Mode = BindingMode.TwoWay;
             bindingTotalCD.UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged;
             totalTextBlock.SetBinding(TextBlock.TextProperty, bindingTotalCD);
+
+            Binding bindingMem = new Binding("Members");
+            bindingMem.Source = ChuyendiDAO.GetAll()[IDTTChuyendi];
+            bindingMem.Mode = BindingMode.TwoWay;
+            bindingMem.UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged;
+            chartController.SetBinding(PieSeries.ItemsSourceProperty, bindingMem);
+            chartController.Refresh();
         }
 
         // preference https://stackoverflow.com/questions/1268552/how-do-i-get-a-textbox-to-only-accept-numeric-input-in-wpf
@@ -167,7 +176,7 @@ namespace Chuyendi
 
         private void addMemberBtn_Click(object sender, RoutedEventArgs e)
         {
-            ChuyendiDAO.GetAll()[IDTTChuyendi].Members.Insert(0, new Thanhvien() {Name = "Nhập tên", Bills= new List<Bill>(), Debt=0, Paid=0});
+            ChuyendiDAO.GetAll()[IDTTChuyendi].Members.Insert(0, new Thanhvien() { Name = "Nhập tên", Bills = new List<Bill>(), Debt = 0, Paid = 0 });
             ChuyendiDAO.GetAll()[IDTTChuyendi].Update();
             UpdateList();
         }
@@ -181,7 +190,7 @@ namespace Chuyendi
         {
             var btn = sender as Button;
 
-            ChuyendiDAO.GetAll()[IDTTChuyendi].Members.Where(mem => mem.Name.Equals(btn.Tag)).ToList()[0].Bills.Insert(0,new Bill());
+            ChuyendiDAO.GetAll()[IDTTChuyendi].Members.Where(mem => mem.Name.Equals(btn.Tag)).ToList()[0].Bills.Insert(0, new Bill());
             ChuyendiDAO.GetAll()[IDTTChuyendi].Update();
             UpdateList();
         }
@@ -300,25 +309,10 @@ namespace Chuyendi
             TextedGeometry = combinedGeometry;
         }
     }
+    
 
-    public class PieSeries : System.Windows.Controls.DataVisualization.Charting.PieSeries
-    {
-        protected override DataPoint CreateDataPoint()
-        {
-            return new PieDataPoint();
-        }
-
-        /*protected static readonly DependencyProperty ActualLegendItemStyleProperty = DependencyProperty.Register("ActualLegendItemStyle", typeof(Style), typeof(DataPointSeries), null);
-        protected Style ActualLegendItemStyle
-        {
-            get
-            {
-                return (base.GetValue(ActualLegendItemStyleProperty) as Style);
-            }
-            set
-            {
-                base.SetValue(ActualLegendItemStyleProperty, value);
-            }
-        }*/
+    public class Test {
+        public string Name { get; set; }
+        public int Paid { get; set; }
     }
 }

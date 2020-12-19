@@ -77,6 +77,7 @@ namespace Chuyendi
 
             chuyendiListView.ItemsSource = listChuyendi;
             chuyendiListView.Items.Refresh();
+            chuyendiListView.ScrollIntoView(chuyendiListView.Items[0]);
 
         }
 

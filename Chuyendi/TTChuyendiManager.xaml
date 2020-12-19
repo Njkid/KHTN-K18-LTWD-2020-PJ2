@@ -6,12 +6,11 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Chuyendi"
         mc:Ignorable="d"
-        Title="TTChuyendiManager" Height="600" Width="900"
+        Title="TTChuyendiManager" Height="700" Width="1000"
         WindowStartupLocation="CenterScreen"
         Loaded="Window_Loaded">
     <Window.Resources>
         <local:ColorDebtConverter x:Key="ColorDebtConverter"/>
-        <local:PieSeries x:Key="PieSeries"/>
     </Window.Resources>
     <Grid>
         <Grid.Background>
@@ -24,8 +23,8 @@
                 <RowDefinition Height="30"/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="1*"/>
-                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="45*"/>
+                <ColumnDefinition Width="55*"/>
             </Grid.ColumnDefinitions>
 
             <Grid Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Background="#aa000000">
@@ -51,7 +50,7 @@
                         <ComboBox Name="statusChangeComboBox"  Width="150px" Margin="20,0,0,0"></ComboBox>
                     </StackPanel>
                     <StackPanel Grid.Row="1" VerticalAlignment="Center">
-                        <Button x:Name="addMemberBtn" Width="150" Click="addMemberBtn_Click">+ Thêm thành viên</Button>
+                        <Button x:Name="addMemberBtn" Width="150" Click="addMemberBtn_Click" HorizontalAlignment="Right">+ Thêm thành viên</Button>
                     </StackPanel>
                     <ListView Grid.Row="2" Name="listViewMembers" ScrollViewer.CanContentScroll="False">
                         <ListView.ItemTemplate>
@@ -122,12 +121,12 @@
                     <RowDefinition Height="1*"/>
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="1*"/>
-                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="4*"/>
+                    <ColumnDefinition Width="6*"/>
                 </Grid.ColumnDefinitions>
                 
                 <Grid Grid.Row="1" Grid.Column="0">
-                    <StackPanel VerticalAlignment="Center">
+                    <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
                         <StackPanel Orientation="Horizontal" Margin="10">
                             <TextBlock FontWeight="Bold" FontSize="12pt">Tổng chi:</TextBlock>
                             <TextBlock x:Name="totalTextBlock" FontWeight="Bold" FontSize="14pt" Margin="10,0,0,0"></TextBlock>
@@ -138,10 +137,9 @@
                         </StackPanel>                 
                     </StackPanel>
                 </Grid>
-                <Grid x:Name="chartArea" Grid.Row="1" Grid.Column="1">
+                <Grid x:Name="chartArea" Grid.Row="1" Grid.Column="1" Margin="5,0,20,0">
                     <chartingToolkit:Chart Name="pieChart" Title="Biểu đồ">
-                        <local:PieSeries x:Name="chartController" 
-                                         DataContext="{Binding RelativeSource={RelativeSource Self}}"
+                        <chartingToolkit:PieSeries x:Name="chartController"                                         
                                          DependentValuePath="Paid" IndependentValuePath="Name"                              
                                          IsSelectionEnabled="False" 
                         />
@@ -151,9 +149,9 @@
                 
                 <Grid Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
                     <StackPanel HorizontalAlignment="Center">
-                        <StackPanel Orientation="Horizontal" Margin="10">
-                            <TextBlock >Địa điểm:</TextBlock>
-                            <TextBlock x:Name="placeTextBlock" Margin="10,0,0,0"></TextBlock>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="10">
+                            <TextBlock FontSize="13pt">Địa điểm:</TextBlock>
+                            <TextBlock FontSize="13pt" x:Name="placeTextBlock" Margin="10,0,0,0"></TextBlock>
                         </StackPanel>
                         <Image x:Name="imageImg"  Height="200"/>
                     </StackPanel>
